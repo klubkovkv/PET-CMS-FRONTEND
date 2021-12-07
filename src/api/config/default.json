@@ -1,0 +1,11 @@
+{
+  "debug": true,
+  "api": {
+    "host": "localhost",
+    "port": 32326,
+    "defaultLimit": 24,
+    "apiUrl": "https://api.kvartira-orenburg.ru/api/",
+    "cssDirectory": "kvartiraOrenburg",
+    "siteUrl": "http://localhost:3000"
+  }
+}
