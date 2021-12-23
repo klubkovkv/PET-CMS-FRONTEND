@@ -5,8 +5,8 @@ import { Login, Pages } from './pages';
 const App = () => {
     return (
         <Routes>
-            <Route path="login" element={<Login />} />
-            <Route path="/" element={<Layout />}>
+            <Route element={<Layout />}>
+                <Route path="/" element={<Login />} />
                 <Route path="pages" element={<Pages />} />
             </Route>
         </Routes>

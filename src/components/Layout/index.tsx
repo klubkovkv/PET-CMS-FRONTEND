@@ -1,14 +1,26 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../store';
+import { useEffect } from 'react';
 
-const Layout = () => {
-    const isAuth = false;
+const Layout = observer(() => {
+    const { authStore } = useStore();
+    const { isAuthorised } = authStore;
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthorised) {
+            return navigate('/pages');
+        }
+        return navigate('/');
+    }, [isAuthorised, navigate]);
+
     return (
         <div className="wrapper">
             <div className="wrapper__content">
-                {isAuth ? <Outlet /> : <Navigate to="/login" />}
+                <Outlet />
             </div>
         </div>
     );
-};
-
+});
 export default Layout;

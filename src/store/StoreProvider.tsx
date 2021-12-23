@@ -1,6 +1,5 @@
-import { createContext, FC, useContext, useMemo } from 'react';
+import { createContext, FC, useContext } from 'react';
 import { TRootStoreInstance } from './RootStore';
-import { initStore } from './initStore';
 
 export const RootStoreContext = createContext<null | TRootStoreInstance>(null);
 
@@ -13,19 +12,10 @@ export const useStore = (): TRootStoreInstance => {
 };
 
 type TStoreProvider = {
-    initialState?: TRootStoreInstance;
-    host: string;
+    store: TRootStoreInstance;
 };
 
-export const StoreProvider: FC<TStoreProvider> = ({
-    children,
-    host,
-    initialState,
-}) => {
-    const store = useMemo(
-        () => initStore(initialState?.apiUrl || '', host, initialState),
-        [host, initialState]
-    );
+export const StoreProvider: FC<TStoreProvider> = ({ children, store }) => {
     return (
         <RootStoreContext.Provider value={store}>
             {children}

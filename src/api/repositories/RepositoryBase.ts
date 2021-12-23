@@ -1,5 +1,5 @@
-import axios from 'axios';
-import defaultConfig from '../config/default.json';
+import axios, { AxiosRequestHeaders } from 'axios';
+import defaultConfig from '../../config/default.json';
 import { ServerError } from '../entities/ServerError';
 import { Query, SortParam } from '../../types';
 
@@ -87,7 +87,7 @@ export abstract class RepositoryBase {
     async getMethod(
         query?: Query,
         urlParams?: string,
-        headers?: unknown
+        headers?: AxiosRequestHeaders
     ): Promise<unknown | undefined> {
         let result = null;
         let error = null;
@@ -98,7 +98,6 @@ export abstract class RepositoryBase {
 
         await axios
             .get(requestUrl, {
-                //@ts-ignore
                 headers,
             })
             .then(response => (result = response.data))
@@ -166,7 +165,7 @@ export abstract class RepositoryBase {
     async postMethod(
         data: unknown,
         urlParams?: string,
-        headers?: unknown
+        headers?: AxiosRequestHeaders
     ): Promise<unknown | null> {
         let result = null;
         let error = null;
@@ -174,7 +173,6 @@ export abstract class RepositoryBase {
 
         await axios
             .post(requestUrl, data, {
-                // @ts-ignore
                 headers: headers ?? {},
             })
             .then(response => (result = response.data))
@@ -190,8 +188,8 @@ export abstract class RepositoryBase {
     async putMethod(
         data: unknown,
         urlParams?: string,
-        headers?: unknown
-    ): Promise<any | null> {
+        headers?: AxiosRequestHeaders
+    ): Promise<unknown | null> {
         let result = null;
         let error = null;
         const requestUrl = `${this.apiUrl}${this.requestUrl}${urlParams || ''}`;
@@ -199,7 +197,6 @@ export abstract class RepositoryBase {
 
         await axios
             .put(requestUrl, data, {
-                //@ts-ignore
                 headers: headers ?? {},
             })
             .then(response => (result = response.data))
@@ -217,8 +214,8 @@ export abstract class RepositoryBase {
     async deleteMethod(
         data: unknown,
         urlParams?: string,
-        headers?: unknown
-    ): Promise<any | null> {
+        headers?: AxiosRequestHeaders
+    ): Promise<unknown | null> {
         let result = null;
         let error = null;
         const requestUrl = `${this.apiUrl}${this.requestUrl}${urlParams || ''}`;
@@ -227,7 +224,6 @@ export abstract class RepositoryBase {
         await axios
             .delete(requestUrl, {
                 data,
-                //@ts-ignore
                 headers: headers ?? {},
             })
             .then(response => (result = response.data))

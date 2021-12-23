@@ -1,19 +1,17 @@
 import { RepositoryBase } from '../RepositoryBase';
 import { TLoginProps } from '../../models/account/AccountModel';
 
-export type TSendPhoneResponse = { token: string };
 export type TUser = {
     email: string;
     id: number;
-    name: string;
-    orderCount: number;
-    phone: string;
 };
 export type TLoginResponse = {
-    data: TUser;
-    token: string;
-    type: string;
-    refreshToken: string;
+    user: TUser;
+    token: {
+        accessToken: string;
+        refreshToken: string;
+        type: string;
+    };
 };
 export type TMeProps = {
     token: string;
@@ -22,32 +20,32 @@ export type TMeProps = {
 
 export class AccountRepository extends RepositoryBase {
     constructor(apiUrl: string) {
-        super(apiUrl, 'account');
-    }
-
-    static prepareLoginResource(item: Partial<TLoginResponse>): TLoginResponse {
-        return {
-            data: AccountRepository.prepareUserData(item.data || {}),
-            refreshToken: item?.refreshToken || '',
-            token: item?.token || '',
-            type: item?.type || '',
-        };
-    }
-
-    async login(props: TLoginProps): Promise<TLoginResponse> {
-        return AccountRepository.prepareLoginResource(
-            await super.postMethod(props, '/login')
-        ) as TLoginResponse;
+        super(apiUrl, 'auth');
     }
 
     static prepareUserData(item: Partial<TUser>): TUser {
         return {
             email: item?.email || '',
             id: item?.id || -1,
-            name: item?.name || '',
-            orderCount: item?.orderCount || 0,
-            phone: item?.phone || '',
         };
+    }
+
+    static prepareLoginResource(item: Partial<TLoginResponse>): TLoginResponse {
+        console.log('item', item);
+        return {
+            user: AccountRepository.prepareUserData(item.user || {}),
+            token: {
+                accessToken: item?.token?.accessToken || '',
+                refreshToken: item?.token?.refreshToken || '',
+                type: item?.token?.type || '',
+            },
+        };
+    }
+
+    async login(props: TLoginProps): Promise<TLoginResponse> {
+        return AccountRepository.prepareLoginResource(
+            (await super.postMethod(props, '/login')) as Partial<TLoginResponse>
+        ) as TLoginResponse;
     }
 
     async me(props: TMeProps): Promise<TUser> {

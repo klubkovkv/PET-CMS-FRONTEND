@@ -1,18 +1,13 @@
-import { BaseModel, BaseModelProps } from '../BaseModel';
+import { BaseModel } from '../BaseModel';
 import {
     TLoginResponse,
     TMeProps,
     TUser,
 } from '../../repositories/account/AccountRepository';
 
-export type TSendPhoneProps = { phone: string; recaptchaToken: string };
-export type TLoginProps = { phone: string; password: string; token: string };
+export type TLoginProps = { email: string; password: string };
 
 export class AccountModel extends BaseModel {
-    constructor(props: BaseModelProps) {
-        super(props);
-    }
-
     async login(props: TLoginProps): Promise<TLoginResponse> {
         return await this.repository.accountRepository.login(props);
     }

@@ -10,8 +10,8 @@ import { BaseStore } from './BaseStore';
 import { RootStore } from '../RootStore';
 import { AccountModel } from '../../api/models/account/AccountModel';
 import { TUser } from '../../api/repositories/account/AccountRepository';
-export const TCustomer = types.custom<TUser, TUser>({
-    name: 'TCustomer',
+export const TAdmin = types.custom<TUser, TUser>({
+    name: 'TAdmin',
     fromSnapshot(value) {
         return value;
     },
@@ -24,7 +24,7 @@ export const TCustomer = types.custom<TUser, TUser>({
     getValidationMessage(value): string {
         // eslint-disable-next-line
         if (true) return ''; // OK
-        return `'${value}' doesn't look like a valid TCustomer`;
+        return `'${value}' doesn't look like a valid TAdmin`;
     },
 });
 
@@ -32,54 +32,43 @@ export const AuthStore = types
     .compose(
         BaseStore,
         types.model({
-            phone: types.optional(types.string, '+7'),
-            phoneError: types.optional(types.string, ''),
-            smsCode: types.optional(types.string, ''),
-            smsCodeError: types.optional(types.string, ''),
+            email: types.optional(types.string, ''),
+            error: types.optional(types.string, ''),
+            password: types.optional(types.string, ''),
             token: types.optional(types.string, ''),
             type: types.optional(types.string, ''),
-            phoneToken: types.optional(types.string, ''),
-            timerSecondsLeft: types.optional(types.number, 0),
-            isProcessTimer: types.optional(types.boolean, false),
-            user: types.optional(TCustomer, null),
+            user: types.maybeNull(TAdmin),
         })
     )
     .actions(self => {
-        const updatePhone = (phone: string): void => {
+        const updateEmail = (email: string): void => {
             applySnapshot(self, {
                 ...self,
-                phone,
+                email,
             });
         };
 
-        const clearPhoneError = (): void => {
+        const clearError = (): void => {
             applySnapshot(self, {
                 ...self,
-                phoneError: '',
+                error: '',
             });
         };
 
-        const updateSmsCode = (smsCode: string): void => {
+        const updatePassword = (password: string): void => {
             applySnapshot(self, {
                 ...self,
-                smsCode,
-            });
-        };
-
-        const clearSmsCodeError = (): void => {
-            applySnapshot(self, {
-                ...self,
-                smsCodeError: '',
+                password,
             });
         };
 
         const fetchToken = async (): Promise<void> => {
-            const token = localStorage.getItem('auth');
-            const type = localStorage.getItem('type');
+            const type = localStorage.getItem('type') || '';
+            const token = localStorage.getItem('auth') || '';
             applySnapshot(self, {
                 ...self,
-                token: token || '',
-                type: type || '',
+                token: token,
+                type: type,
             });
 
             if (token) {
@@ -90,7 +79,7 @@ export const AuthStore = types
                     };
                     await new AccountModel(modelProps).getUser({ type, token });
                 } catch (e) {
-                    logout();
+                    await logout();
                 }
             }
         };
@@ -105,35 +94,26 @@ export const AuthStore = types
             localStorage.setItem('type', type);
         };
 
-        const setAuthPhoneToken = (phoneToken: string): void => {
-            applySnapshot(self, {
-                ...self,
-                phoneToken,
-            });
-        };
-
-        const login = async (cb?: () => Promise<void>): Promise<void> => {
+        const login = async (cb?: () => void): Promise<void> => {
             const modelProps = {
                 repository: getParent<typeof RootStore>(self).repository,
             };
-            const { phoneToken, phone, smsCode } = self;
-            if (phoneToken) {
+            console.log('modelProps', modelProps, self);
+            const { email, password } = self;
+            if (password) {
                 try {
-                    const { token, type } = await new AccountModel(
-                        modelProps
-                    ).login({
-                        token: phoneToken,
-                        phone,
-                        password: smsCode,
+                    const { token } = await new AccountModel(modelProps).login({
+                        email,
+                        password,
                     });
-                    localStorage.setItem('type', type);
-                    setAuthToken(token, type);
+                    localStorage.setItem('type', token?.type);
+                    setAuthToken(token.accessToken, token?.type);
                     cb?.();
-                } catch (e) {
-                    if (e.data.errors?.password) {
+                } catch (e: any) {
+                    if (e.data?.message) {
                         applySnapshot(self, {
                             ...self,
-                            smsCodeError: e.data.errors?.password[0],
+                            error: e.data.message,
                         });
                     }
                 }
@@ -156,9 +136,6 @@ export const AuthStore = types
                 ...self,
                 token: '',
                 type: '',
-                phoneToken: '',
-                smsCode: '',
-                smsCodeError: '',
             });
             localStorage.setItem('auth', '');
             localStorage.setItem('type', '');
@@ -166,21 +143,17 @@ export const AuthStore = types
 
         return {
             fetchToken,
-            updatePhone,
-            clearPhoneError,
-            setAuthPhoneToken,
-            updateSmsCode,
-            clearSmsCodeError,
+            updateEmail,
+            clearError,
+            updatePassword,
             login,
             logout,
         };
     })
     .views(self => ({
         get isAuthorised(): boolean {
-            return self.token !== '';
-        },
-        get isPhoneSent(): boolean {
-            return self.phoneToken !== '';
+            const token = localStorage.getItem('auth') || '';
+            return token !== '';
         },
     }));
 // eslint-disable-next-line
