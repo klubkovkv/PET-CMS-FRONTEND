@@ -1,5 +1,7 @@
+// Generate media queries
+
 @mixin below($width, $orientation: 'width') {
-    @media screen and (max-#{$orientation}: $width - 1px) {
+    @media screen and (max-#{$orientation}: $width) {
         @content;
     }
 }
@@ -14,4 +16,65 @@
     @media screen and (min-#{$orientation}: $minWidth) and (max-#{$orientation}: $maxWidth) {
         @content;
     }
+}
+
+// Generate aspect ratio
+
+@mixin preview($width, $height) {
+    padding-bottom: $height / $width * 100%;
+}
+
+// Define RGB from HEX
+
+@mixin defineColorRGB($color-name, $value) {
+    $red: red($value);
+    $green: green($value);
+    $blue: blue($value);
+
+    #{$color-name}-rgb: $red, $green, $blue;
+}
+
+// Custom scroll
+
+@mixin customScroll($scroll: true) {
+    @include above($breakpoint-lg) {
+        &::-webkit-scrollbar {
+            width: 6px;
+            background-color: transparent;
+
+            @if $scroll {
+                width: 24px;
+            }
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border: 10px solid rgba(0, 0, 0, 0);
+            border-radius: 20px;
+            background-color: var(--color-gray-light);
+
+            @if $scroll {
+                background-clip: padding-box;
+            }
+        }
+
+        &::-webkit-scrollbar-button {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        &::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+    }
+}
+
+@mixin gradientOverlay($color) {
+    background: var($color);
+    background-size: 100%;
+    background-repeat: repeat;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
 }

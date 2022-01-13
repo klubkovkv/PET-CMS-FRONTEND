@@ -3,24 +3,22 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
 import { useEffect } from 'react';
 
-const Layout = observer(() => {
+const AuthLayout = observer(() => {
     const { authStore } = useStore();
-    const { isAuthorised } = authStore;
+    const { isAuthorized } = authStore;
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (isAuthorised) {
+        if (isAuthorized) {
             return navigate('/pages');
         }
         return navigate('/');
-    }, [isAuthorised, navigate]);
+    }, [isAuthorized]);
 
     return (
         <div className="wrapper">
-            <div className="wrapper__content">
-                <Outlet />
-            </div>
+            <Outlet />
         </div>
     );
 });
-export default Layout;
+export default AuthLayout;

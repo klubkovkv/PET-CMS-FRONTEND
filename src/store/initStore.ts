@@ -26,6 +26,7 @@ export function initStore(apiUrl: string, snapshot?: TRootStoreInstance) {
             // searchStore: {}
             apiUrl,
             authStore: {},
+            breadcrumbsStore: {},
             // favoriteStore: {},
         });
 
@@ -38,7 +39,8 @@ export function initStore(apiUrl: string, snapshot?: TRootStoreInstance) {
     if (typeof window === 'undefined') {
         return _store;
     } else {
-        //prepare initial productList
+        //prepare store
+        _store.authStore.fetchToken();
     }
     // Create the index once in the client
     if (!index) {

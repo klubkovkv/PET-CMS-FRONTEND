@@ -1,46 +1,177 @@
-// fonts
-$FontFamily: Roboto, Arial, sans-serif;
+:root {
+    // Spacing
 
-// Text size
-$sxs-font-size: 12px;
-$xs-font-size: 13px;
-$sm-font-size: 14px;
-$md-font-size: 16px;
-$lg-font-size: 18px;
-$xl-font-size: 20px;
+    --space-module: 8px;
+    --space-xxxs: calc(var(--space-module) * 2); // 16
+    --space-xxs: calc(var(--space-module) * 3); // 24
+    --space-xs: calc(var(--space-module) * 4); // 32
+    --space-sm: calc(var(--space-module) * 5); // 40
+    --space-md: calc(var(--space-module) * 6); // 48
+    --space-lg: calc(var(--space-module) * 7); // 56
+    --space-xl: calc(var(--space-module) * 8); // 64
+    --space-xxl: calc(var(--space-module) * 9); // 72
+    --space-xxxl: calc(var(--space-module) * 10); // 80
 
-$head-sm-size: 22px;
-$head-md-size: 24px;
-$head-lg-size: 28px;
-$head-xl-size: 36px;
+    --block-indent: 56px;
+    --block-indent-top: 56px;
+    --block-indent-bottom: 56px;
+    --component-padding: 20px;
 
-// responsive vars
-$lg-desktop: 1920px;
-$md-desktop: 1440px;
-$lg-tablet: 1024px;
-$md-tablet: 768px;
-$lg-mobile: 480px;
-$md-mobile: 360px;
+    // Colors
 
-// colors
-$white: #ffffff;
-$black: #000000;
-$mainGreen: #3aa18e;
-$additionalGreen: #44bfa8;
-$mainText: #3d4248;
-$additionalText: #747678;
-$crmColor: #EFF8FF;
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    --color-dark: #3D4248;
+    --color-gray: #c7cdd2;
+    --color-gray-light: #F0F2F6;
+    --color-gray-dark: #747678;
 
-$mainBg: #f0f2f6;
-$red: #db5246;
-$redDark: #a81320;
-$formBorder: #c7cacd;
-$borderColor: #dadee3;
-$inputBorder: #dbe0e4;
+    --color-primary: #02B897;
+    --color-primary-dark: #02B897;
+    --color-primary-light: #02B897;
 
-$hoverColor: #44bfa8;
-$gray: #b1b4b8;
-$graySoft: #eff3f6;
+    --color-accent: #02B897;
+    --color-accent-dark: #02B897;
+    --color-accent-light: #02B897;
 
-// parallax slider
-$paralaxAutoplay: 10s;
+    --color-info: #FEDD69;
+    --color-success: #02B897;
+    --color-error: #EC260B;
+    --color-warning: #FF7E07;
+
+    --color-text-primary: #3D4248;
+    --color-text-secondary: #747678;
+    --color-text-light: #FFFFFF;
+    --color-text-dark: #3D4248;
+
+    --color-gradient-primary: #02B897;
+    --color-gradient-secondary: #44BFA8;
+
+    --bg-primary: #F0F2F6;
+    --bg-accent: var(--color-white);
+    --bg-success: rgba(var(--color-primary-rgb), 0.1);
+    --bg-warning: rgba(var(--color-warning-rgb-rgb), 0.1);
+    --bg-error: rgba(var(--color-error-rgb), 0.1);
+    --bg-tooltip: #3D4248;
+    --bg-page: var(--bg-primary);
+
+    --header-bg-color: #FFFFFF;
+    --footer-bg-color: #3D4248;
+
+    --hover-color: #00D7B0;
+    --hover-gray: #E6EAF1;
+    --hover-gray-dark: #5d5f61;
+    --disabled-color: #C7CDD2;
+
+    --border-color-default: gray;
+    --overlay-color: rgba(0, 0, 0, 0.5);
+
+    // Generate RGB from Css-vars
+
+    @include defineColorRGB(--color-white, #FFFFFF);
+    @include defineColorRGB(--color-black, #000000);
+    @include defineColorRGB(--color-dark, #3D4248);
+    @include defineColorRGB(--color-gray, #C7CDD2);
+    @include defineColorRGB(--color-gray-light, #F0F2F6);
+    @include defineColorRGB(--color-gray-dark, #747678);
+
+    @include defineColorRGB(--color-primary, #02B897);
+    @include defineColorRGB(--color-primary-dark, #02B897);
+    @include defineColorRGB(--color-primary-light, #02B897);
+
+    @include defineColorRGB(--color-accent, #02B897);
+    @include defineColorRGB(--color-accent-dark, #02B897);
+    @include defineColorRGB(--color-accent-light, #02B897);
+
+    @include defineColorRGB(--color-info, #FEDD69);
+    @include defineColorRGB(--color-success, #02B897);
+    @include defineColorRGB(--color-error, #EC260B);
+    @include defineColorRGB(--color-warning, #FF7E07);
+
+    @include defineColorRGB(--color-text-primary, #3D4248);
+    @include defineColorRGB(--color-text-secondary, #747678);
+    @include defineColorRGB(--color-text-light, #FFFFFF);
+    @include defineColorRGB(--color-text-dark, #D3D3D3);
+
+    @include defineColorRGB(--bg-primary, #F0F2F6);
+    @include defineColorRGB(--bg-tooltip, #3D4248);
+
+    @include defineColorRGB(--form-border, #B1B4B8);
+
+    // Typography
+
+    --text-module: 4px;
+    --text-xxxs: calc(var(--text-module) * 2); // 8
+    --text-xxs: calc(var(--text-module) * 3); // 12
+    --text-xs: calc(var(--text-module) * 4); // 16
+    --text-sm: calc(var(--text-module) * 5); // 20
+    --text-md: calc(var(--text-module) * 6); // 24
+    --text-lg: calc(var(--text-module) * 7); // 28
+    --text-xl: calc(var(--text-module) * 8); // 32
+    --text-xxl: calc(var(--text-module) * 9); // 36
+    --text-xxxl: calc(var(--text-module) * 10); // 40
+
+    --heading-module: 8px;
+    --heading-sm: calc(var(--heading-module) * 6); // 48
+    --heading-md: calc(var(--heading-module) * 7); // 56
+    --heading-lg: calc(var(--heading-module) * 8); // 64
+    --heading-xl: calc(var(--heading-module) * 9); // 72
+    --heading-xxl: calc(var(--heading-module) * 10); // 80
+
+    --base-line-height: 1.2;
+    --heading-line-height: 1.4;
+
+    --text-base-weight: 400;
+    --text-medium-weight: 600;
+    --heading-base-weight: 700;
+
+    // Fonts
+
+    --font-primary: 'Gilroy', Arial, sans-serif;
+    --font-secondary: 'Roboto', Arial, sans-serif;
+    --font-accent: 'Roboto', Arial, sans-serif;
+
+    // Radius
+
+    --radius-module: 4px;
+    --radius-xxs: calc(var(--radius-module) * 2); // 8
+    --radius-xs: calc(var(--radius-module) * 3);    // 12
+    --radius-sm: calc(var(--radius-module) * 4);    // 16
+    --radius-md: calc(var(--radius-module) * 5);    // 20
+    --radius-lg: calc(var(--radius-module) * 6);    // 24
+    --radius-xl: calc(var(--radius-module) * 7);    // 28
+    --radius-xxl: calc(var(--radius-module) * 8);   // 32
+
+    // Icons
+
+    --icon-module: 8px;
+    --icon-xxs: calc(var(--icon-module) * 2); // 16
+    --icon-xs: calc(var(--icon-module) * 3); // 24
+    --icon-sm: calc(var(--icon-module) * 4); // 32
+    --icon-md: calc(var(--icon-module) * 5); // 40
+    --icon-lg: calc(var(--icon-module) * 6); // 48
+    --icon-xl: calc(var(--icon-module) * 7); // 56
+    --icon-xxl: calc(var(--icon-module) * 8); // 72
+
+    // z-index
+
+    --zindex-header: 3;
+    --zindex-popover: 5;
+    --zindex-fixed-element: 10;
+    --zindex-overlay: 15;
+
+    // Transitions
+
+    --transition-duration: 0.3s;
+
+}
+
+// Breakpoints
+
+$breakpoint-xs: 360px;
+$breakpoint-sm: 479.98px;
+$breakpoint-md: 767.98px;
+$breakpoint-lg: 1023.98px;
+$breakpoint-xl: 1366px;
+$breakpoint-xxl: 1920px;
+$breakpoint-special: 1260px;

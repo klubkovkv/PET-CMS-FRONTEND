@@ -1,13 +1,17 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import { Login, Pages } from './pages';
+import AuthLayout from './layouts/AuthLayout';
+import NavLayout from './layouts/NavLayout';
+import { Login, Pages, Settings } from './pages';
 
 const App = () => {
     return (
         <Routes>
-            <Route element={<Layout />}>
+            <Route element={<AuthLayout />}>
                 <Route path="/" element={<Login />} />
-                <Route path="pages" element={<Pages />} />
+                <Route element={<NavLayout />}>
+                    <Route path="pages" element={<Pages />} />
+                    <Route path="settings" element={<Settings />} />
+                </Route>
             </Route>
         </Routes>
     );

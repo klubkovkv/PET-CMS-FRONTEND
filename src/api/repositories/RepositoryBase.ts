@@ -1,4 +1,5 @@
-import axios, { AxiosRequestHeaders } from 'axios';
+import { axiosInstance as axios } from '../helpers/axios';
+import { AxiosRequestHeaders } from 'axios';
 import defaultConfig from '../../config/default.json';
 import { ServerError } from '../entities/ServerError';
 import { Query, SortParam } from '../../types';

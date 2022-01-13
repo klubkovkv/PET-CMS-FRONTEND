@@ -3,6 +3,6 @@
   "api": {
     "port": 32326,
     "defaultLimit": 24,
-    "apiUrl": "http://localhost:3080/api/"
+    "apiUrl": "/api/"
   }
 }

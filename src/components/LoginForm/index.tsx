@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { CustomInput, Btn } from '../ui-kit';
 import { useStore } from '../../store';
 import { observer } from 'mobx-react-lite';
@@ -19,14 +19,13 @@ const LoginForm: FC<LoginFormProps> = observer(props => {
     } = authStore;
     const navigate = useNavigate();
     const onAuth = () => navigate('/pages');
-
     return (
         <div className="loginForm">
             <div className="loginForm__title">Авторизация</div>
             <div className="loginForm__textBefore">
                 Введите логин и пароль для входа в систему
             </div>
-            <form name="loginForm">
+            <form name="loginForm" autoComplete={'off'}>
                 <CustomInput
                     className="loginForm__input"
                     label="E-mail"

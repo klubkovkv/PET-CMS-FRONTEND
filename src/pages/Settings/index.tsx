@@ -1,27 +1,23 @@
 import { useEffect } from 'react';
-import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
+import { observer } from 'mobx-react-lite';
 
-const Pages = observer(() => {
+const Settings = observer(() => {
     const { breadcrumbsStore } = useStore();
     const { setBreadcrumbs } = breadcrumbsStore;
 
     useEffect(() => {
         const breadcrumbs = [
             {
-                url: '/pages',
-                name: 'Страницы',
-            },
-            {
-                url: '#',
-                name: 'Конструктор страниц',
+                url: '/settings',
+                name: 'Общие настройки',
             },
         ];
 
         setBreadcrumbs(breadcrumbs);
     }, [setBreadcrumbs]);
 
-    return <>{'ss'}</>;
+    return <div>{'Настройки'}</div>;
 });
 
-export default Pages;
+export default Settings;

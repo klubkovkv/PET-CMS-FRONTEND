@@ -7,7 +7,7 @@ export type TUser = {
 };
 export type TLoginResponse = {
     user: TUser;
-    token: {
+    tokens: {
         accessToken: string;
         refreshToken: string;
         type: string;
@@ -34,10 +34,10 @@ export class AccountRepository extends RepositoryBase {
         console.log('item', item);
         return {
             user: AccountRepository.prepareUserData(item.user || {}),
-            token: {
-                accessToken: item?.token?.accessToken || '',
-                refreshToken: item?.token?.refreshToken || '',
-                type: item?.token?.type || '',
+            tokens: {
+                accessToken: item?.tokens?.accessToken || '',
+                refreshToken: item?.tokens?.refreshToken || '',
+                type: item?.tokens?.type || '',
             },
         };
     }

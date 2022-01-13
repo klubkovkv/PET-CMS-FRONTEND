@@ -42,7 +42,7 @@ const CustomInput: FC<CustomInputProps> = props => {
     } = props;
 
     const [isFocused, setIsFocused] = useState(false);
-    const { debounceChange, stringValue } = useDebounce(value, onChange, 1500);
+    const { debounceChange, stringValue } = useDebounce(value, onChange, 150);
 
     useEffect(() => {
         debounceChange(value);

@@ -1,12 +1,12 @@
 import { Instance, SnapshotIn, types } from 'mobx-state-tree';
 import { Repository } from '../api/repositories/Repository';
-import { BaseStore } from './modules/BaseStore';
-import { AuthStore } from './modules/AuthStore';
+import { BaseStore, AuthStore, BreadcrumbsStore } from './modules';
 export const RootStore = types.compose(
     BaseStore,
     types
         .model({
             authStore: AuthStore,
+            breadcrumbsStore: BreadcrumbsStore,
             apiUrl: types.string,
         })
         .volatile(self => {

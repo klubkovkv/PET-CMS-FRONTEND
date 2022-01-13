@@ -1,0 +1,20 @@
+.wrapper {
+    position: relative;
+    display: flex;
+    max-width: 100%;
+    min-height: 100vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    &__content {
+        width: calc(100% - 90px);
+        margin-right: auto;
+        max-width: 1830px;
+
+        &--center {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+        }
+    }
+}

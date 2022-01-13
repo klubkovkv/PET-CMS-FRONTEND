@@ -98,16 +98,19 @@ export const AuthStore = types
             const modelProps = {
                 repository: getParent<typeof RootStore>(self).repository,
             };
-            console.log('modelProps', modelProps, self);
+
             const { email, password } = self;
-            if (password) {
+            console.log('modelProps', email, password);
+            if (email && password) {
                 try {
-                    const { token } = await new AccountModel(modelProps).login({
-                        email,
-                        password,
-                    });
-                    localStorage.setItem('type', token?.type);
-                    setAuthToken(token.accessToken, token?.type);
+                    const { tokens } = await new AccountModel(modelProps).login(
+                        {
+                            email,
+                            password,
+                        }
+                    );
+                    localStorage.setItem('type', tokens?.type);
+                    setAuthToken(tokens.accessToken, tokens?.type);
                     cb?.();
                 } catch (e: any) {
                     if (e.data?.message) {
@@ -121,6 +124,7 @@ export const AuthStore = types
         };
 
         const logout = async (): Promise<void> => {
+            console.log('logout');
             try {
                 const modelProps = {
                     repository: getParent<typeof RootStore>(self).repository,
@@ -151,9 +155,8 @@ export const AuthStore = types
         };
     })
     .views(self => ({
-        get isAuthorised(): boolean {
-            const token = localStorage.getItem('auth') || '';
-            return token !== '';
+        get isAuthorized(): boolean {
+            return self.token !== '';
         },
     }));
 // eslint-disable-next-line
